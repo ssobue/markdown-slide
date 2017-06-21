@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::header"></head>
+<style>
+  .content {
+    position: absolute;
+    margin: 20px;
+  }
+</style>
+<body>
+<div class="content">
+  <h1>Upload File</h1>
+  <form enctype="multipart/form-data" th:action="@{/upload}" method="post">
+    <div class="form-group">
+      <label>FileName:</label>
+      <input name="fileName" />
+    </div>
+    <div class="form-group">
+      <label>FilePath:</label>
+      <input type="file"  name="file" />
+    </div>
+    <div class="form-group">
+      <input id="data_upload_button" type="submit" value="アップロード"/>
+    </div>
+  </form>
+</div>
+<div th:replace="common::js_footer"></div>
+</body>
+</html>

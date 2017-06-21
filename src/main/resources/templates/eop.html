@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::header"></head>
+<style>
+  html,body{
+    hight: 100%;
+  }
+
+  body{
+    margin: 0;
+    padding: 0;
+    positiion: relative;
+    min-width: 600px;
+    min-height: 400px;
+  }
+
+  .content{
+    margin: -200px 0 0 -300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 400px;
+  }
+</style>
+<body>
+<div class="content">
+  <h1 th:text="${title}"></h1>
+</div>
+<script th:inline="javascript" language="JavaScript">
+  /*<![CDATA[*/
+  $(function(){
+    $('html').keyup(function(e){
+      switch(e.which){
+        case 37:
+          window.location.href = /*[[${backUrl}]]*/ '/index';
+          break;
+      }
+    });
+  });
+  /*]]>*/
+</script>
+<div th:replace="common::js_footer"></div>
+</body>
+</html>
