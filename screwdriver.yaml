@@ -1,0 +1,8 @@
+---
+shared:
+  image: java 
+
+jobs:
+  main:
+    steps:
+      - mvn-install: ./mvnw install 
