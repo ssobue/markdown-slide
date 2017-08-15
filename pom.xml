@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.4.RELEASE</version>
+        <version>1.5.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -25,14 +25,29 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Library Version -->
         <markdownj.version>0.4</markdownj.version>
+        <bootstrap.version>3.3.7</bootstrap.version>
+        <jquery.version>3.2.1</jquery.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Markdown Parser -->
             <dependency>
                 <groupId>org.markdownj</groupId>
                 <artifactId>markdownj-core</artifactId>
                 <version>${markdownj.version}</version>
+            </dependency>
+
+            <!-- webjars -->
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>${bootstrap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery</artifactId>
+                <version>${jquery.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -54,6 +69,11 @@
         <dependency>
             <groupId>org.markdownj</groupId>
             <artifactId>markdownj-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
         </dependency>
 
         <dependency>
