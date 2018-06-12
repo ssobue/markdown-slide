@@ -6,9 +6,9 @@ shared:
       statuses:
         - SUCCESS
         - FAILURE
-      annotations:
-          beta.screwdriver.cd/cpu: HIGH
-          beta.screwdriver.cd/ram: HIGH
+    annotations:
+      beta.screwdriver.cd/cpu: HIGH
+      beta.screwdriver.cd/ram: HIGH
 jobs:
   main:
     requires:
