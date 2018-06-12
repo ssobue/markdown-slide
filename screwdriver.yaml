@@ -1,8 +1,19 @@
----
 shared:
-  image: java 
-
+  settings:
+    email:
+      addresses:
+        - meru26.sho@gmail.com
+      statuses:
+        - SUCCESS
+        - FAILURE
+      annotations:
+          beta.screwdriver.cd/cpu: HIGH
+          beta.screwdriver.cd/ram: HIGH
 jobs:
   main:
+    requires:
+      - ~pr
+      - ~commit
+    image: maven:3-jdk-8
     steps:
-      - mvn-install: ./mvnw install 
+      - mvn-install: mvn install
