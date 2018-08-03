@@ -1,34 +1,26 @@
 package jp.sobue.slide.cache;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import jp.sobue.slide.entity.MarkdownDocument;
+import lombok.NonNull;
 
 public class MarkdownDocumentCache {
 
-  private static Map<String, List<MarkdownDocument>> objects = new HashMap<>();
+  private static Map<String, List<MarkdownDocument>> objects = new ConcurrentHashMap<>();
 
-  private MarkdownDocumentCache() {
-  }
+  private MarkdownDocumentCache() {}
 
-  public static synchronized void put(String key, List<MarkdownDocument> documents) {
-    if (key == null) {
-      throw new RuntimeException("invalid input");
-    }
-
+  public static void put(@NonNull String key, @NonNull List<MarkdownDocument> documents) {
     objects.put(key, documents);
   }
 
-  public static List<MarkdownDocument> get(String key) {
-    if (key == null) {
-      throw new RuntimeException("invalid input");
-    }
-
+  public static List<MarkdownDocument> get(@NonNull String key) {
     return objects.get(key);
   }
 
-  public static synchronized void clear() {
+  public static void clear() {
     objects.clear();
   }
 }

@@ -1,23 +1,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="common::header"></head>
-<style>
-  .content {
-    position: absolute;
-    margin: 20px;
-  }
-  body {
-    display:none
-  }
-</style>
-<script th:inline="javascript" language="JavaScript">
-  /*<![CDATA[*/
-  $(document).ready(function() {
-    $('body').fadeIn(1000);
-  });
-  /*]]>*/
-</script>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!--/*@thymesVar id="title" type="java.lang.String"*/-->
+  <title th:text="${title}">Title</title>
+  <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+  <script src="/webjars/popper.js/1.14.1/umd/popper.min.js"></script>
+  <script src="/webjars/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <link href="/webjars/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      display:none
+    }
+  </style>
+  <script th:inline="javascript" language="JavaScript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $('body').fadeIn(1000);
+    });
+    /*]]>*/
+  </script>
+</head>
 <body>
-<div class="content" th:utext="${body}"></div>
+<!--/*@thymesVar id="body" type="java.lang.String"*/-->
+<div class="container" th:utext="${body}"></div>
 <script th:inline="javascript" language="JavaScript">
   /*<![CDATA[*/
   $('body').click(function () {
@@ -39,6 +46,5 @@
   });
   /*]]>*/
 </script>
-<div th:replace="common::js_footer"></div>
 </body>
 </html>

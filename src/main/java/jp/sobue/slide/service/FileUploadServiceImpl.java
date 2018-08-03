@@ -20,8 +20,8 @@ public class FileUploadServiceImpl implements FileUploadService {
       // アップロードファイルを置く
       File uploadFile = new File(name + ".md");
       byte[] bytes = multipartFile.getBytes();
-      BufferedOutputStream uploadFileStream = new BufferedOutputStream(
-          new FileOutputStream(uploadFile));
+      BufferedOutputStream uploadFileStream =
+          new BufferedOutputStream(new FileOutputStream(uploadFile));
       uploadFileStream.write(bytes);
       uploadFileStream.close();
       return uploadFile;

@@ -1,32 +1,24 @@
 package jp.sobue.slide.cache;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import lombok.NonNull;
 
 public class FileCache {
 
-  private static Map<String, String> objects = new HashMap<>();
+  private static Map<String, String> objects = new ConcurrentHashMap<>();
 
-  private FileCache() {
-  }
+  private FileCache() {}
 
-  public static synchronized void put(String key, String content) {
-    if (key == null) {
-      throw new RuntimeException("invalid input");
-    }
-
+  public static void put(@NonNull String key, String content) {
     objects.put(key, content);
   }
 
-  public static String get(String key) {
-    if (key == null) {
-      throw new RuntimeException("invalid input");
-    }
-
+  public static String get(@NonNull String key) {
     return objects.get(key);
   }
 
-  public static synchronized void clear() {
+  public static void clear() {
     objects.clear();
   }
 }
