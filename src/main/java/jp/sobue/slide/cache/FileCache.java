@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.NonNull;
 
-public class FileCache {
+public final class FileCache {
 
   private static Map<String, String> objects = new ConcurrentHashMap<>();
 

@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import jp.sobue.slide.entity.MarkdownDocument;
 import lombok.NonNull;
 
-public class MarkdownDocumentCache {
+public final class MarkdownDocumentCache {
 
   private static Map<String, List<MarkdownDocument>> objects = new ConcurrentHashMap<>();
 
