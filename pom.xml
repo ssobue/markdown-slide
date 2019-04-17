@@ -39,8 +39,7 @@
     <scm>
         <url>http://github.com/ssobue/markdown-slide</url>
         <connection>scm:git:https://github.com/ssobue/markdown-slide.git</connection>
-        <developerConnection>scm:git:ssh://github.com:ssobue/markdown-slide.git
-        </developerConnection>
+        <developerConnection>scm:git:ssh://github.com:ssobue/markdown-slide.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
