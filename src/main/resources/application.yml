@@ -2,3 +2,11 @@ management:
   endpoint:
     health:
       show-details: always
+spring:
+  thymeleaf:
+    cache: false
+  cache:
+    type: simple
+    cache-names:
+      - file
+      - document

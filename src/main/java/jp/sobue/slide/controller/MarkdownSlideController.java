@@ -6,7 +6,7 @@ import jp.sobue.slide.entity.MarkdownDocument;
 import jp.sobue.slide.entity.UploadFile;
 import jp.sobue.slide.service.FileUploadService;
 import jp.sobue.slide.service.MarkdownSlideService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,18 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequiredArgsConstructor
 public class MarkdownSlideController {
 
   private final FileUploadService fileUploadService;
 
   private final MarkdownSlideService markdownSlideService;
-
-  @Autowired
-  public MarkdownSlideController(
-      FileUploadService fileUploadService, MarkdownSlideService markdownSlideService) {
-    this.fileUploadService = fileUploadService;
-    this.markdownSlideService = markdownSlideService;
-  }
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String root() {

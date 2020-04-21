@@ -1,39 +1,25 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <!--/*@thymesVar id="title" type="java.lang.String"*/-->
   <title th:text="${title}">Title</title>
-  <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-  <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-  <link href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-      display:none
-    }
-  </style>
-  <script th:inline="javascript" language="JavaScript">
-    /*<![CDATA[*/
-    $(document).ready(function() {
-      $('body').fadeIn(1000);
-    });
-    /*]]>*/
-  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
 <!--/*@thymesVar id="body" type="java.lang.String"*/-->
 <div class="container" th:utext="${body}"></div>
-<script th:inline="javascript" language="JavaScript">
+<script th:inline="javascript">
   /*<![CDATA[*/
   $('body').click(function () {
     window.location.href =  /*[[${forwardUrl}]]*/ '/index';
   });
 
-  $(function(){
-    $('html').keyup(function(e){
-      switch(e.which){
+  $(function () {
+    $('html').keyup(function (e) {
+      switch (e.which) {
         case 39:
           window.location.href = /*[[${forwardUrl}]]*/ '/index';
           break;

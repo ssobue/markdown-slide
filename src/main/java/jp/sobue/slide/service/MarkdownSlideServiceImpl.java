@@ -6,22 +6,19 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import jp.sobue.slide.cache.FileCache;
-import jp.sobue.slide.cache.MarkdownDocumentCache;
+import jp.sobue.slide.cache.DocumentStore;
 import jp.sobue.slide.converter.Markdown2HtmlConverter;
 import jp.sobue.slide.entity.MarkdownDocument;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class MarkdownSlideServiceImpl implements MarkdownSlideService {
 
   private final Markdown2HtmlConverter converter;
 
-  @Autowired
-  public MarkdownSlideServiceImpl(Markdown2HtmlConverter converter) {
-    this.converter = converter;
-  }
+  private final DocumentStore documentStore;
 
   @Override
   public List<MarkdownDocument> get(File file) {
@@ -37,7 +34,7 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
     }
 
     String content = builder.toString();
-    FileCache.put(file.getName(), content);
+    documentStore.put(file.getName(), content);
     return get(file.getName(), content);
   }
 
@@ -52,7 +49,7 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
       documents.add(document);
     }
 
-    MarkdownDocumentCache.put(key, documents);
+    documentStore.put(key, documents);
 
     return documents;
   }
