@@ -1,4 +1,4 @@
-package jp.sobue.slide.converter;
+package dev.sobue.slide.converter;
 
 public interface Markdown2HtmlConverter {
 

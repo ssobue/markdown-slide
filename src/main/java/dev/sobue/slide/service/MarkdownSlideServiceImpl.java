@@ -1,14 +1,14 @@
-package jp.sobue.slide.service;
+package dev.sobue.slide.service;
 
+import dev.sobue.slide.cache.DocumentStore;
+import dev.sobue.slide.converter.Markdown2HtmlConverter;
+import dev.sobue.slide.entity.MarkdownDocument;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import jp.sobue.slide.cache.DocumentStore;
-import jp.sobue.slide.converter.Markdown2HtmlConverter;
-import jp.sobue.slide.entity.MarkdownDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
         string = reader.readLine();
       }
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new IllegalStateException(e);
     }
 
     String content = builder.toString();

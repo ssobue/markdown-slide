@@ -1,4 +1,4 @@
-package jp.sobue.slide.entity;
+package dev.sobue.slide.entity;
 
 import lombok.Data;
 import lombok.ToString;

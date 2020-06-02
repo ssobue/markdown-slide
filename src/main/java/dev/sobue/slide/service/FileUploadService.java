@@ -1,4 +1,4 @@
-package jp.sobue.slide.service;
+package dev.sobue.slide.service;
 
 import java.io.File;
 import org.springframework.web.multipart.MultipartFile;

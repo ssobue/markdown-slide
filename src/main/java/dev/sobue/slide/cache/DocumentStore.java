@@ -1,7 +1,7 @@
-package jp.sobue.slide.cache;
+package dev.sobue.slide.cache;
 
+import dev.sobue.slide.entity.MarkdownDocument;
 import java.util.List;
-import jp.sobue.slide.entity.MarkdownDocument;
 
 public interface DocumentStore {
 

@@ -1,4 +1,4 @@
-package jp.sobue.slide.converter;
+package dev.sobue.slide.converter;
 
 import java.net.URI;
 import java.util.HashMap;

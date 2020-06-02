@@ -1,8 +1,8 @@
-package jp.sobue.slide.service;
+package dev.sobue.slide.service;
 
+import dev.sobue.slide.entity.MarkdownDocument;
 import java.io.File;
 import java.util.List;
-import jp.sobue.slide.entity.MarkdownDocument;
 
 public interface MarkdownSlideService {
 

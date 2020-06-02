@@ -1,8 +1,10 @@
-management:
-  endpoint:
-    health:
-      show-details: always
 spring:
+  application:
+    name: markdown-slide
+  main:
+    banner-mode: off
+  profiles:
+    active: dev
   thymeleaf:
     cache: false
   cache:
