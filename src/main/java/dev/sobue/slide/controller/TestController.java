@@ -20,21 +20,20 @@ public class TestController {
   public ResponseEntity<Void> test() throws Exception {
     InputStream a1 = getClass().getResourceAsStream("/application.yml");
 
-    Map<String, String> a2 = Collections.emptyMap();
+   Map<String, String> a2 = Collections.emptyMap();
 
-    for (String key : a2.keySet()) {
-      String a3 = a2.getOrDefault(key, "test");
+   for (String key : a2.keySet()) {
+     String a3 = a2.getOrDefault(key, "test");
     }
 
     long cnt = 0L;
     do {
-      if (random.nextInt() % 10 == 0) {
+    if (random.nextInt() % 10 == 0) {
         Thread.sleep(1000L);
-        cnt++;
+       cnt++;
       }
-      cnt++;
+     cnt++;
     } while (cnt != 100);
 
-    return ResponseEntity.ok().build();
-  }
+    return ResponseEntity.ok().build(); }
 }
