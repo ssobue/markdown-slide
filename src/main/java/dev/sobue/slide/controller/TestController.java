@@ -1,6 +1,9 @@
 package dev.sobue.slide.controller;
 
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +18,22 @@ public class TestController {
 
   @GetMapping("/test")
   public ResponseEntity<Void> test() throws Exception {
-    InputStream is = getClass().getResourceAsStream("/application.yml");
+    InputStream a1 = getClass().getResourceAsStream("/application.yml");
+
+    Map<String, String> a2 = Collections.emptyMap();
+
+    for (String key : a2.keySet()) {
+      String a3 = a2.getOrDefault(key, "test");
+    }
 
     long cnt = 0L;
     do {
       if (random.nextInt() % 10 == 0) {
         Thread.sleep(1000L);
+        cnt++;
       }
-    } while (cnt++ < 100);
+      cnt++;
+    } while (cnt != 100);
 
     return ResponseEntity.ok().build();
   }
