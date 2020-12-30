@@ -1,9 +1,9 @@
 package dev.sobue.slide.service;
 
 import java.io.File;
-import org.springframework.web.multipart.MultipartFile;
+import java.io.InputStream;
 
 public interface FileUploadService {
 
-  File upload(String name, MultipartFile multipartFile);
+  File upload(String name, InputStream inputFile);
 }
