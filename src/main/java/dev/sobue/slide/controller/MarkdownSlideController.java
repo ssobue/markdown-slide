@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 @RequiredArgsConstructor
 public class MarkdownSlideController {
 
+  private static final String TITLE_ATTRIBUTE = "title";
+
   private final FileUploadService fileUploadService;
 
   private final MarkdownSlideService markdownSlideService;
@@ -37,13 +39,13 @@ public class MarkdownSlideController {
 
   @GetMapping(value = "/index")
   public String index(Model model) {
-    model.addAttribute("title", "Top Page");
+    model.addAttribute(TITLE_ATTRIBUTE, "Top Page");
     return "index";
   }
 
   @GetMapping(value = "/upload")
   public String upload(Model model) {
-    model.addAttribute("title", "Upload Page");
+    model.addAttribute(TITLE_ATTRIBUTE, "Upload Page");
     return "upload";
   }
 
@@ -88,11 +90,11 @@ public class MarkdownSlideController {
     model.addAttribute("forwardUrl", "/view/" + file + "/" + (page + 1));
 
     if (page > documents.size()) {
-      model.addAttribute("title", "End of Presentation");
+      model.addAttribute(TITLE_ATTRIBUTE, "End of Presentation");
       return "eop";
     }
 
-    model.addAttribute("title", "View Page");
+    model.addAttribute(TITLE_ATTRIBUTE, "View Page");
     model.addAttribute("body", documents.get(page - 1).getBody());
 
     return "view";
