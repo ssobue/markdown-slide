@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.1</version>
+        <version>2.4.5</version>
     </parent>
 
     <groupId>dev.sobue.slide</groupId>
@@ -37,7 +37,7 @@
     </developers>
 
     <scm>
-        <url>http://github.com/ssobue/markdown-slide</url>
+        <url>https://github.com/ssobue/markdown-slide</url>
         <connection>scm:git:https://github.com/ssobue/markdown-slide.git</connection>
         <developerConnection>scm:git:ssh://github.com:ssobue/markdown-slide.git
         </developerConnection>
@@ -51,22 +51,6 @@
         <sonar.organization>ssobue</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>spring-milestone</id>
-            <name>Spring milestone</name>
-            <url>https://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestone</id>
-            <name>Spring milestone</name>
-            <url>https://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <distributionManagement>
         <repository>
@@ -123,46 +107,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>native</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.experimental</groupId>
-                    <artifactId>spring-graalvm-native</artifactId>
-                    <version>0.8.3</version>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.graalvm.nativeimage</groupId>
-                        <artifactId>native-image-maven-plugin</artifactId>
-                        <version>20.3.0</version>
-                        <configuration>
-                            <mainClass>dev.sobue.slide.MarkdownSlideApplication</mainClass>
-                            <buildArgs>
-                                <!-- optionak optimization flag to reduce the footprint. -->
-                                <buildArg>-Dspring.native.remove-yaml-support=true</buildArg>
-                                <buildArg>-Dspring.spel.ignore=true</buildArg>
-                            </buildArgs>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>native-image</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
