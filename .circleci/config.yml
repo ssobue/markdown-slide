@@ -6,7 +6,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:17-jdk
+      # https://circleci.com/developer/ja/images/image/cimg/openjdk
+      - image: cimg/openjdk:17.0
 
     working_directory: ~/repo
     
