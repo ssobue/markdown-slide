@@ -1,26 +1,21 @@
 package dev.sobue.slide.controller;
 
-import dev.sobue.slide.entity.MarkdownDocument;
 import dev.sobue.slide.service.FileUploadService;
 import dev.sobue.slide.service.MarkdownSlideService;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.http.codec.multipart.FormFieldPart;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,12 +27,12 @@ public class MarkdownSlideController {
 
   private final MarkdownSlideService markdownSlideService;
 
-  @GetMapping(value = "/")
+  @RequestMapping(value = "/")
   public String root() {
     return "redirect:/index";
   }
 
-  @GetMapping(value = "/index")
+  @RequestMapping(value = "/index")
   public String index(Model model) {
     model.addAttribute(TITLE_ATTRIBUTE, "Top Page");
     return "index";
@@ -49,38 +44,30 @@ public class MarkdownSlideController {
     return "upload";
   }
 
-  @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(
+      value = "/upload",
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
   public String uploadPost(
-      @RequestPart("fileName") FormFieldPart fileNamePart,
-      @RequestPart("file") FilePart filePart
-  ) {
-    String fileName = fileNamePart.value();
-
-    // append UUID to prevent file-name collision
-    File file = new File(UUID.randomUUID().toString() + "-" + filePart.filename());
-    filePart.transferTo(file).subscribe();
-
-    try (InputStream fis = new FileInputStream(file)) {
-      fileUploadService.upload(fileName, fis);
+      @RequestParam("fileName") String name, @RequestParam("file") MultipartFile multipartFile) {
+    try {
+      fileUploadService.upload(name, multipartFile.getInputStream());
     } catch (FileNotFoundException notFoundException) {
       throw new IllegalArgumentException(notFoundException);
     } catch (IOException ioException) {
       throw new UncheckedIOException(ioException);
-    } finally {
-      file.delete(); // delete uploaded original file.
     }
 
-    return "redirect:/view/" + fileName;
+    return "redirect:/view/" + name;
   }
 
-  @GetMapping(value = "/view/{file}")
+  @RequestMapping(value = "/view/{file}")
   public String viewTop(@PathVariable String file) {
     return "redirect:/view/" + file + "/1";
   }
 
-  @GetMapping(value = "/view/{file}/{page}")
+  @RequestMapping(value = "/view/{file}/{page}")
   public String view(Model model, @PathVariable String file, @PathVariable Integer page) {
-    List<MarkdownDocument> documents = markdownSlideService.get(new File(file + ".md"));
+    var documents = markdownSlideService.get(new File(file + ".md"));
 
     if (page != 1) {
       model.addAttribute("backUrl", "/view/" + file + "/" + (page - 1));

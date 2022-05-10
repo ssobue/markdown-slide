@@ -25,30 +25,28 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
 
   @Override
   public List<MarkdownDocument> get(File file) {
-    StringBuilder builder = new StringBuilder();
-    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    var builder = new StringBuilder();
+    try (var reader = new BufferedReader(new FileReader(file))) {
       String string;
       while ((string = reader.readLine()) != null) {
-        builder
-            .append(string)
-            .append(LINE_SEPARATOR);
+        builder.append(string).append(LINE_SEPARATOR);
       }
     } catch (IOException ioException) {
       throw new UncheckedIOException(ioException);
     }
 
-    String content = builder.toString();
+    var content = builder.toString();
     documentStore.put(file.getName(), content);
     return get(file.getName(), content);
   }
 
   @Override
   public List<MarkdownDocument> get(String key, String content) {
-    List<String> chapters = List.of(content.split("\n# "));
-    List<MarkdownDocument> documents = new ArrayList<>();
+    var chapters = List.of(content.split("\n# "));
+    var documents = new ArrayList<MarkdownDocument>();
 
-    for (int i = 0; i < chapters.size(); i++) {
-      MarkdownDocument document = new MarkdownDocument();
+    for (var i = 0; i < chapters.size(); i++) {
+      var document = new MarkdownDocument();
       document.setBody(converter.convert2html((i == 0) ? chapters.get(i) : "# " + chapters.get(i)));
       documents.add(document);
     }
