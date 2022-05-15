@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.util.StreamUtils.copy;
@@ -12,7 +13,7 @@ import static org.springframework.util.StreamUtils.copy;
 public class FileUploadServiceImpl implements FileUploadService {
 
   @Override
-  public File upload(String name, InputStream inputFile) {
+  public File upload(@NonNull final String name, @NonNull final InputStream inputFile) {
     // アップロードファイルを置く
     var uploadFile = new File(name + ".md");
 

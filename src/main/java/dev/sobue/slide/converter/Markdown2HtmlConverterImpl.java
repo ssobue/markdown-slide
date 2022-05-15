@@ -1,36 +1,38 @@
 package dev.sobue.slide.converter;
 
 import java.net.URI;
-import java.util.HashMap;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestOperations;
+
+import static java.util.Collections.singletonMap;
+import static org.springframework.http.RequestEntity.post;
 
 @Component
-@RequiredArgsConstructor
 public class Markdown2HtmlConverterImpl implements Markdown2HtmlConverter {
 
-  private static final String API_ENDPOINT = "https://api.github.com/markdown";
+  private final RestOperations restOperations;
 
-  private final RestTemplateBuilder builder;
+  private final URI apiEndPoint;
+
+  public Markdown2HtmlConverterImpl(
+      RestTemplateBuilder builder,
+      @Value("${github.api.markdown:https://api.github.com/markdown}") String apiEndPoint) {
+    this.restOperations = builder.build();
+    this.apiEndPoint = URI.create(apiEndPoint);
+  }
 
   @Override
   public String convert2html(@NonNull final String markdown) {
-    var body = new HashMap<String, String>();
-    body.put("text", markdown);
-
-    ResponseEntity<String> responseEntity =
-        builder
-            .build()
-            .exchange(
-                RequestEntity.post(URI.create(API_ENDPOINT))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(body),
-                String.class);
-    return responseEntity.getBody();
+    return restOperations
+        .exchange(
+            post(apiEndPoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(singletonMap("text", markdown)),
+            String.class)
+        .getBody();
   }
 }

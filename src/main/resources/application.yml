@@ -12,8 +12,3 @@ spring:
     cache-names:
       - file
       - document
-
-logging:
-  level:
-    root: info
-    org.springframework: warn
