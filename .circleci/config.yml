@@ -22,7 +22,7 @@ jobs:
           - v1-dependencies-
 
       # run tests!
-      - run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      - run: ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
       - store_test_results:
           path: ./target/surefire-reports
@@ -30,6 +30,33 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts
           destination: artifacts
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+
+  native-build:
+    docker:
+      - image: ghcr.io/graalvm/jdk:ol9-java17
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      # run tests!
+      - run: ./mvnw verify -Pnative
+
+      - store_test_results:
+          path: ./target/surefire-reports
 
       - save_cache:
           paths:
