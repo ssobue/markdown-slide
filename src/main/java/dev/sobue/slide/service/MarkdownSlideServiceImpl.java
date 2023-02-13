@@ -19,16 +19,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 
+/**
+ * Implementation for markdown-slide logic.
+ *
+ * @author SOBUE Sho
+ */
 @Service
 @RequiredArgsConstructor
 public class MarkdownSlideServiceImpl implements MarkdownSlideService {
 
+  /**
+   * Constant: Line separator string.
+   */
   private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
+  /**
+   * Converter: HTML from Markdown.
+   */
   private final Markdown2HtmlConverter converter;
 
+  /**
+   * Repository for documents.
+   */
   private final DocumentRepository repository;
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Transactional
   @Cacheable(cacheNames = "file", key = "'file-content-' + #file.name")
@@ -47,6 +64,9 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
     return get(file.getName(), content);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Transactional
   @Cacheable(cacheNames = "document", key = "'file-content-' + #key")

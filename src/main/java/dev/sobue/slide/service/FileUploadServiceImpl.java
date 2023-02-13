@@ -9,9 +9,17 @@ import org.springframework.stereotype.Service;
 
 import static org.springframework.util.StreamUtils.copy;
 
+/**
+ * Implementation for writing file to local disk.
+ *
+ * @author SOBUE Sho
+ */
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public File upload(@NonNull final String name, @NonNull final InputStream inputFile) {
     // アップロードファイルを置く
@@ -21,7 +29,7 @@ public class FileUploadServiceImpl implements FileUploadService {
       copy(inputFile, fos);
       return uploadFile;
     } catch (IOException e) {
-      throw new IllegalStateException("fail uploading");
+      throw new IllegalStateException("fail writing to local disk");
     }
   }
 }
