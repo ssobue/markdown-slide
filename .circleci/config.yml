@@ -1,70 +1,26 @@
-# Java Maven CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
 version: 2.1
-jobs:
-  build:
+
+orbs:
+  # https://circleci.com/developer/orbs/orb/circleci/maven
+  maven: circleci/maven@1.4.1
+
+executors:
+  openjdk17:
     docker:
       # https://circleci.com/developer/ja/images/image/cimg/openjdk
       - image: cimg/openjdk:17.0
-
-    working_directory: ~/repo
-    
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      # run tests!
-      - run: ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-
-      - store_test_results:
-          path: ./target/surefire-reports
-
-      - store_artifacts:
-          path: /tmp/artifacts
-          destination: artifacts
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-
-  native-build:
+  graalvm:
     docker:
       - image: ghcr.io/graalvm/jdk:ol9-java17
 
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      # run tests!
-      - run: ./mvnw verify -Pnative
-
-      - store_test_results:
-          path: ./target/surefire-reports
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-
 workflows:
-  build-workflow:
+  verify:
     jobs:
-      - build
-      - native-build
+      - maven/test:
+          name: test
+          executor: openjdk17
+          command: 'verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
+      - maven/test:
+          name: native-test
+          executor: graalvm
+          command: 'verify -Pnative'
