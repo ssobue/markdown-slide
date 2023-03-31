@@ -13,6 +13,23 @@ executors:
     docker:
       - image: ghcr.io/graalvm/jdk:ol9-java17
 
+jobs:
+  native-test:
+    docker:
+      - image: ghcr.io/graalvm/jdk:ol9-java17
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+      - run: ./mvnw verify -Pnative
+      - store_test_results:
+          path: ./target/surefire-reports
+      - save_cache:
+          paths:
+            - ~/.m2/repository
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+
 workflows:
   verify:
     jobs:
@@ -20,7 +37,4 @@ workflows:
           name: test
           executor: openjdk17
           command: 'verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
-      - maven/test:
-          name: native-test
-          executor: graalvm
-          command: 'verify -Pnative'
+      - native-test
