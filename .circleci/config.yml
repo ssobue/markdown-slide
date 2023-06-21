@@ -22,7 +22,8 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
-      - run: ./mvnw verify -Pnative
+      # https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.native-build-tools.maven
+      - run: ./mvnw -Pnative native:compile
       - store_test_results:
           path: ./target/surefire-reports
       - save_cache:
