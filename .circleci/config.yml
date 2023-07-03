@@ -9,20 +9,19 @@ executors:
     docker:
       # https://circleci.com/developer/ja/images/image/cimg/openjdk
       - image: cimg/openjdk:17.0
-  graalvm:
-    docker:
-      - image: ghcr.io/graalvm/jdk:ol9-java17
 
 jobs:
   native-test:
+    resource_class: large
     docker:
-      - image: ghcr.io/graalvm/jdk:ol9-java17
+      - image: ghcr.io/graalvm/graalvm-ce:22.3.1
     steps:
       - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
       # https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.native-build-tools.maven
+      - run: gu install native-image
       - run: ./mvnw -Pnative native:compile
       - store_test_results:
           path: ./target/surefire-reports
