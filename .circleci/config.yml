@@ -20,11 +20,15 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
-      # https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.native-build-tools.maven
       - run: gu install native-image
+      # https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.native-build-tools.maven
       - run: ./mvnw -Pnative native:compile
       - store_test_results:
           path: ./target/surefire-reports
+      - store_artifacts:
+          path: ./target/markdown-slide
+      - store_artifacts:
+          path: ./target/markdown-slide.build_artifacts.txt
       - save_cache:
           paths:
             - ~/.m2/repository
