@@ -12,3 +12,18 @@ spring:
     cache-names:
       - file
       - document
+  h2:
+    console:
+      enabled: true
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+
+logging:
+  level:
+    root: info
+    org.apache.tomcat: warn
+    org.apache.catalina: warn
+    org.springframework: warn
+    org.hibernate: warn
+    com.zaxxer.hikari: warn

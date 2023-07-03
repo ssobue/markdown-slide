@@ -3,6 +3,7 @@ package dev.sobue.slide.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
 import lombok.Data;
 import lombok.ToString;
 
@@ -25,6 +26,7 @@ public final class MarkdownDocument {
   /**
    * document body.
    */
-  @Column(name = "BODY")
+  @Column(name = "BODY", nullable = false)
+  @Lob
   private String body;
 }
