@@ -14,8 +14,8 @@ jobs:
   native-test:
     resource_class: large
     docker:
-      # https://www.graalvm.org/latest/docs/getting-started/container-images/
-      - image: ghcr.io/graalvm/jdk-community:21
+      # https://container-registry.oracle.com/ords/ocr/ba/graalvm/graalvm-community
+      - image: container-registry.oracle.com/graalvm/graalvm-community:21
     steps:
       - checkout
       - restore_cache:
