@@ -5,16 +5,17 @@ orbs:
   maven: circleci/maven@1.4.1
 
 executors:
-  openjdk17:
+  openjdk21:
     docker:
       # https://circleci.com/developer/ja/images/image/cimg/openjdk
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:21.0
 
 jobs:
   native-test:
     resource_class: large
     docker:
-      - image: ghcr.io/graalvm/graalvm-ce:22.3.1
+      # https://www.graalvm.org/latest/docs/getting-started/container-images/
+      - image: ghcr.io/graalvm/jdk-community:21
     steps:
       - checkout
       - restore_cache:
@@ -39,6 +40,6 @@ workflows:
     jobs:
       - maven/test:
           name: test
-          executor: openjdk17
+          executor: openjdk21
           command: 'verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
       - native-test
