@@ -1,0 +1,24 @@
+# https://github.com/marketplace/actions/github-action-for-graalvm
+name: GraalVM CI
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up GraalVM JDK 21
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm-community'
+      - name: Build with Maven
+        run: ./mvnw -Pnative native:compile
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: markdown-slide-ubuntu
+          path: ./target/markdown-slide
