@@ -24,7 +24,7 @@ public final class MarkdownDocument {
   private DocumentKey documentKey;
 
   /**
-   * document body.
+   * Document body.
    */
   @Column(name = "BODY", nullable = false)
   @Lob

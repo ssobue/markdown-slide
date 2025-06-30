@@ -31,7 +31,7 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
   /**
    * Constant: Line separator string.
    */
-  private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+  private static final String LINE_SEPARATOR = System.lineSeparator();
 
   /**
    * Converter: HTML from Markdown.

@@ -29,12 +29,12 @@ public class MarkdownSlideController {
   private static final String TITLE_ATTRIBUTE = "title";
 
   /**
-   * file uploading.
+   * File uploading.
    */
   private final FileUploadService fileUploadService;
 
   /**
-   * markdown-slide logic.
+   * Markdown-slide logic.
    */
   private final MarkdownSlideService markdownSlideService;
 

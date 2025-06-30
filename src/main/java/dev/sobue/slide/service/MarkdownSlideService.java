@@ -13,7 +13,7 @@ import lombok.NonNull;
 public interface MarkdownSlideService {
 
   /**
-   * Get document by file object.
+   * Get a document by file object.
    *
    * @param file markdown file
    * @return parsed Markdown documents
@@ -21,7 +21,7 @@ public interface MarkdownSlideService {
   List<MarkdownDocument> get(@NonNull final File file);
 
   /**
-   * Get document by file object.
+   * Get a document by file object.
    *
    * @param key key name
    * @param content file content

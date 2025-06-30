@@ -21,5 +21,6 @@ public interface DocumentRepository extends JpaRepository<MarkdownDocument, Docu
    * @param title title name
    * @return Markdown documents
    */
+  @SuppressWarnings("checkstyle:MethodName")
   List<MarkdownDocument> findByDocumentKey_TitleOrderByDocumentKey_PageAsc(@NonNull final String title);
 }
