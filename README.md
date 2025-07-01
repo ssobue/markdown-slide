@@ -1,6 +1,6 @@
 # markdown-slide
 
-[![CircleCI](https://circleci.com/gh/ssobue/markdown-slide.svg?style=svg)](https://circleci.com/gh/ssobue/markdown-slide)
+[![Java CI](https://github.com/ssobue/markdown-slide/actions/workflows/main.yaml/badge.svg)](https://github.com/ssobue/markdown-slide/actions/workflows/main.yaml)
 
 markdown-slide is a Spring Boot application that lets you upload a document written in Markdown and easily view it as a slide deck.
 
