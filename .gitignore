@@ -1,5 +1,6 @@
 target/
 *.md
+!AGENTS.md
 application-dev.*
 
 ### STS ###
