@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up GraalVM JDK 21
+      - name: Set up GraalVM JDK 25
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '21'
+          java-version: '25'
           distribution: 'graalvm-community'
       - name: Build with Maven
         run: ./mvnw -Pnative native:compile
