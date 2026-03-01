@@ -17,7 +17,7 @@ jobs:
       - name: Build with Maven
         run: ./mvnw -Pnative native:compile
       - name: Upload binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: markdown-slide-ubuntu
           path: ./target/markdown-slide
