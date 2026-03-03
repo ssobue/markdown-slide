@@ -181,8 +181,8 @@
                         <artifactId>native-maven-plugin</artifactId>
                         <configuration>
                             <jvmArgs>
-                                <arg>-Xms4096m</arg>
-                                <arg>-Xmx4096m</arg>
+                                <arg>-Xms8192m</arg>
+                                <arg>-Xmx8192m</arg>
                             </jvmArgs>
                         </configuration>
                     </plugin>
