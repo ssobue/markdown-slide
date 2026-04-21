@@ -12,7 +12,6 @@ import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -22,12 +21,14 @@ class MarkdownSlideServiceImplTests {
 
   private final Markdown2HtmlConverter converter = mock(Markdown2HtmlConverter.class);
   private final DocumentRepository repository = mock(DocumentRepository.class);
-  private final MarkdownSlideServiceImpl service = new MarkdownSlideServiceImpl(converter, repository);
+  private final MarkdownSlideServiceImpl service = new MarkdownSlideServiceImpl(converter,
+      repository);
 
   @Test
   void getReturnsCachedDocumentsWhenRepositoryAlreadyContainsThem() {
     var cached = createDocument("deck.md", 1, "<p>cached</p>");
-    when(repository.findByDocumentKey_TitleOrderByDocumentKey_PageAsc("deck.md")).thenReturn(java.util.List.of(cached));
+    when(repository.findByDocumentKey_TitleOrderByDocumentKey_PageAsc("deck.md")).thenReturn(
+        java.util.List.of(cached));
 
     var actual = service.get("deck.md", "# ignored");
 
@@ -38,9 +39,12 @@ class MarkdownSlideServiceImplTests {
 
   @Test
   void getSplitsMarkdownIntoPagesAndSavesConvertedDocuments() {
-    when(repository.findByDocumentKey_TitleOrderByDocumentKey_PageAsc("deck.md")).thenReturn(emptyList());
-    when(converter.convert2html(any())).thenAnswer(invocation -> "html:" + invocation.getArgument(0, String.class));
-    when(repository.save(any(MarkdownDocument.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(repository.findByDocumentKey_TitleOrderByDocumentKey_PageAsc("deck.md")).thenReturn(
+        emptyList());
+    when(converter.convert2html(any())).thenAnswer(
+        invocation -> "html:" + invocation.getArgument(0, String.class));
+    when(repository.save(any(MarkdownDocument.class))).thenAnswer(
+        invocation -> invocation.getArgument(0));
 
     var actual = service.get("deck.md", "# First\ncontent\n# Second");
 
@@ -58,9 +62,12 @@ class MarkdownSlideServiceImplTests {
 
   @Test
   void getReadsMarkdownContentFromFile() throws IOException {
-    when(repository.findByDocumentKey_TitleOrderByDocumentKey_PageAsc("slide-test.md")).thenReturn(emptyList());
-    when(converter.convert2html(any())).thenAnswer(invocation -> invocation.getArgument(0, String.class));
-    when(repository.save(any(MarkdownDocument.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(repository.findByDocumentKey_TitleOrderByDocumentKey_PageAsc("slide-test.md")).thenReturn(
+        emptyList());
+    when(converter.convert2html(any())).thenAnswer(
+        invocation -> invocation.getArgument(0, String.class));
+    when(repository.save(any(MarkdownDocument.class))).thenAnswer(
+        invocation -> invocation.getArgument(0));
 
     var file = Files.createTempFile("slide-test", ".md").toFile();
     var renamed = new java.io.File(file.getParentFile(), "slide-test.md");
@@ -86,7 +93,8 @@ class MarkdownSlideServiceImplTests {
     assertThrows(java.io.UncheckedIOException.class, () -> service.get(missing));
   }
 
-  private static MarkdownDocument createDocument(final String title, final int page, final String body) {
+  private static MarkdownDocument createDocument(final String title, final int page,
+      final String body) {
     var key = new DocumentKey();
     key.setTitle(title);
     key.setPage(page);

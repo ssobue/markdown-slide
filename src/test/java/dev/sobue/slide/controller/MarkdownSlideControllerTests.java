@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class MarkdownSlideControllerTests {
@@ -60,7 +59,8 @@ class MarkdownSlideControllerTests {
 
   @Test
   void uploadPostRedirectsToUploadedFileView() throws IOException {
-    var multipartFile = new MockMultipartFile("file", "deck.md", "text/markdown", "# title".getBytes());
+    var multipartFile = new MockMultipartFile("file", "deck.md", "text/markdown",
+        "# title".getBytes());
     when(fileUploadService.upload(eq("deck"), any(ByteArrayInputStream.class)))
         .thenReturn(new File("deck.md"));
 
@@ -71,18 +71,21 @@ class MarkdownSlideControllerTests {
 
   @Test
   void uploadPostReturnsBadRequestForInvalidFileName() {
-    var multipartFile = new MockMultipartFile("file", "deck.md", "text/markdown", "# title".getBytes());
+    var multipartFile = new MockMultipartFile("file", "deck.md", "text/markdown",
+        "# title".getBytes());
     when(fileUploadService.upload(eq("../deck"), any(ByteArrayInputStream.class)))
         .thenThrow(new IllegalArgumentException("bad name"));
 
-    var actual = assertThrows(ResponseStatusException.class, () -> controller.uploadPost("../deck", multipartFile));
+    var actual = assertThrows(ResponseStatusException.class,
+        () -> controller.uploadPost("../deck", multipartFile));
 
     assertEquals(400, actual.getStatusCode().value());
   }
 
   @Test
   void viewReturnsSlideBodyAndNavigationForValidInput() {
-    when(markdownSlideService.get(any(File.class))).thenReturn(List.of(createDocument("deck", 1, "<p>slide</p>")));
+    when(markdownSlideService.get(any(File.class))).thenReturn(
+        List.of(createDocument("deck", 1, "<p>slide</p>")));
     var model = new ExtendedModelMap();
 
     var actual = controller.view(model, "deck", 1);
@@ -98,14 +101,16 @@ class MarkdownSlideControllerTests {
   void viewRejectsInvalidFileName() {
     var model = new ExtendedModelMap();
 
-    var actual = assertThrows(ResponseStatusException.class, () -> controller.view(model, "../deck", 1));
+    var actual = assertThrows(ResponseStatusException.class,
+        () -> controller.view(model, "../deck", 1));
 
     assertEquals(400, actual.getStatusCode().value());
   }
 
   @Test
   void viewReturnsEndOfPresentationWhenPageExceedsDocumentCount() {
-    when(markdownSlideService.get(any(File.class))).thenReturn(List.of(createDocument("deck", 1, "<p>slide</p>")));
+    when(markdownSlideService.get(any(File.class))).thenReturn(
+        List.of(createDocument("deck", 1, "<p>slide</p>")));
     var model = new ExtendedModelMap();
 
     var actual = controller.view(model, "deck", 2);
@@ -116,7 +121,8 @@ class MarkdownSlideControllerTests {
     assertEquals("End of Presentation", model.get("title"));
   }
 
-  private static MarkdownDocument createDocument(final String title, final int page, final String body) {
+  private static MarkdownDocument createDocument(final String title, final int page,
+      final String body) {
     var key = new DocumentKey();
     key.setTitle(title);
     key.setPage(page);
