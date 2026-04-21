@@ -6,7 +6,6 @@ import dev.sobue.slide.service.FileUploadService;
 import dev.sobue.slide.service.MarkdownSlideService;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -58,7 +57,7 @@ class MarkdownSlideControllerTests {
   }
 
   @Test
-  void uploadPostRedirectsToUploadedFileView() throws IOException {
+  void uploadPostRedirectsToUploadedFileView() {
     var multipartFile = new MockMultipartFile("file", "deck.md", "text/markdown",
         "# title".getBytes());
     when(fileUploadService.upload(eq("deck"), any(ByteArrayInputStream.class)))

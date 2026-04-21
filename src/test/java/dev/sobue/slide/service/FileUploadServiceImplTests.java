@@ -18,10 +18,10 @@ class FileUploadServiceImplTests {
     var uploaded = MarkdownFileResolver.resolve("file-upload-service-test");
     Files.deleteIfExists(uploaded.toPath());
 
-    try {
+    try (var input = new ByteArrayInputStream("hello".getBytes(StandardCharsets.UTF_8))) {
       var actual = service.upload(
           "file-upload-service-test",
-          new ByteArrayInputStream("hello".getBytes(StandardCharsets.UTF_8)));
+          input);
 
       assertEquals(uploaded, actual);
       assertTrue(Files.exists(actual.toPath()));

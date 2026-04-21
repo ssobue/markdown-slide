@@ -28,7 +28,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     try (var fos = Files.newOutputStream(uploadFile.toPath())) {
       copy(inputFile, fos);
       return uploadFile;
-    } catch (IOException e) {
+    } catch (IOException _) {
       throw new IllegalStateException("fail writing to local disk");
     }
   }
