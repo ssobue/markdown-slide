@@ -1,12 +1,14 @@
 package dev.sobue.slide.controller;
 
 import dev.sobue.slide.service.FileUploadService;
+import dev.sobue.slide.service.MarkdownFileResolver;
 import dev.sobue.slide.service.MarkdownSlideService;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * markdown-slide controller.
@@ -62,6 +65,8 @@ public class MarkdownSlideController {
       @RequestParam("fileName") String name, @RequestParam("file") MultipartFile multipartFile) {
     try {
       fileUploadService.upload(name, multipartFile.getInputStream());
+    } catch (IllegalArgumentException illegalArgumentException) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid file name", illegalArgumentException);
     } catch (FileNotFoundException notFoundException) {
       throw new IllegalArgumentException(notFoundException);
     } catch (IOException ioException) {
@@ -78,7 +83,13 @@ public class MarkdownSlideController {
 
   @RequestMapping(value = "/view/{file}/{page}")
   public String view(Model model, @PathVariable String file, @PathVariable Integer page) {
-    var documents = markdownSlideService.get(new File(file + ".md"));
+    final File markdownFile;
+    try {
+      markdownFile = MarkdownFileResolver.resolve(file);
+    } catch (IllegalArgumentException illegalArgumentException) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid file name", illegalArgumentException);
+    }
+    var documents = markdownSlideService.get(markdownFile);
 
     if (page != 1) {
       model.addAttribute("backUrl", "/view/" + file + "/" + (page - 1));

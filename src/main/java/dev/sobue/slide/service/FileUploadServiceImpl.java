@@ -1,9 +1,9 @@
 package dev.sobue.slide.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +23,9 @@ public class FileUploadServiceImpl implements FileUploadService {
   @Override
   public File upload(@NonNull final String name, @NonNull final InputStream inputFile) {
     // アップロードファイルを置く
-    var uploadFile = new File(name + ".md");
+    var uploadFile = MarkdownFileResolver.resolve(name);
 
-    try (var fos = new FileOutputStream(uploadFile)) {
+    try (var fos = Files.newOutputStream(uploadFile.toPath())) {
       copy(inputFile, fos);
       return uploadFile;
     } catch (IOException e) {

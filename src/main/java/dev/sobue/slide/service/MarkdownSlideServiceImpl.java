@@ -60,8 +60,7 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
       throw new UncheckedIOException(ioException);
     }
 
-    var content = builder.toString();
-    return get(file.getName(), content);
+    return getDocuments(file.getName(), builder.toString());
   }
 
   /**
@@ -71,6 +70,10 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
   @Transactional
   @Cacheable(cacheNames = "document", key = "'file-content-' + #key")
   public List<MarkdownDocument> get(@NonNull final String key, @NonNull final String content) {
+    return getDocuments(key, content);
+  }
+
+  private List<MarkdownDocument> getDocuments(final String key, final String content) {
     var cacheResult = repository.findByDocumentKey_TitleOrderByDocumentKey_PageAsc(key);
     if (!isEmpty(cacheResult)) {
       return cacheResult;
