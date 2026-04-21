@@ -25,8 +25,8 @@
     </issueManagement>
 
     <ciManagement>
-        <system>CircleCI v2</system>
-        <url>https://circleci.com/gh/ssobue/markdown-slide</url>
+        <system>GitHub Actions</system>
+        <url>https://github.com/ssobue/markdown-slide/actions</url>
     </ciManagement>
 
     <developers>
