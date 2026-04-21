@@ -46,10 +46,13 @@
 
     <properties>
         <java.version>25</java.version>
+        <jacoco.version>0.8.14</jacoco.version>
+        <surefireArgLine />
         <!-- for SonarCloud -->
         <sonar.projectKey>ssobue_markdown-slide</sonar.projectKey>
         <sonar.organization>ssobue</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <distributionManagement>
@@ -162,10 +165,34 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>
+                        @{surefireArgLine}
                         -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
                         -Xshare:off
                     </argLine>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

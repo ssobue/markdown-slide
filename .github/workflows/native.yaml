@@ -2,22 +2,22 @@
 name: GraalVM CI
 
 on:
-  - push
+  push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Set up GraalVM JDK 25
-        uses: graalvm/setup-graalvm@v1
+        uses: graalvm/setup-graalvm@60c26726de13f8b90771df4bc1641a52a3159994 # v1
         with:
           java-version: '25'
           distribution: 'graalvm-community'
       - name: Build with Maven
-        run: ./mvnw -Pnative native:compile
+        run: mvn -Pnative native:compile
       - name: Upload binary
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: markdown-slide-ubuntu
           path: ./target/markdown-slide
