@@ -4,7 +4,13 @@ name: Java CI
 
 on:
   push:
+    branches:
+      - master
   pull_request:
+
+concurrency:
+  group: java-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -13,6 +19,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
@@ -23,8 +31,10 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
-      - name: Build and analyze with Maven
+      - name: Build with Maven
+        run: mvn --batch-mode verify
+      - name: Analyze with SonarQube Cloud
+        if: env.SONAR_TOKEN != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn --batch-mode org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
