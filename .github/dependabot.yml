@@ -2,7 +2,7 @@ version: 2
 
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 updates:
-  - package-ecosystem: "maven"
+  - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "weekly"

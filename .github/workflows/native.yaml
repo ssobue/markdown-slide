@@ -14,10 +14,14 @@ jobs:
         with:
           java-version: '25'
           distribution: 'graalvm-community'
-      - name: Build with Maven
-        run: mvn -Pnative native:compile
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+      - name: Build with Gradle
+        run: ./gradlew --no-daemon nativeCompile
       - name: Upload binary
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: markdown-slide-ubuntu
-          path: ./target/markdown-slide
+          path: ./build/native/nativeCompile/markdown-slide

@@ -16,7 +16,7 @@ Markdown Slide is a small Spring Boot application that turns Markdown documents 
 ### Build and Run
 
 ```bash
-mvn spring-boot:run
+./gradlew bootRun
 ```
 
 The application will start on `http://localhost:8080`.
@@ -29,10 +29,10 @@ The application will start on `http://localhost:8080`.
 
 ### Running Tests
 
-Execute the tests directly with Maven:
+Execute the tests with the Gradle Wrapper:
 
 ```bash
-mvn test
+./gradlew test
 ```
 
-No Maven Wrapper is required.
+Use the checked-in Gradle Wrapper for build and development commands.

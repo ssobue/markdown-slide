@@ -1,0 +1,93 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version '4.1.0'
+    id 'org.graalvm.buildtools.native' version '1.1.2'
+    id 'org.sonarqube' version '7.3.1.8318'
+}
+
+group = 'dev.sobue.slide'
+version = '4.0.0-SNAPSHOT'
+description = 'Markdown Slide Show'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    compileOnly platform(SpringBootPlugin.BOM_COORDINATES)
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    testImplementation platform(SpringBootPlugin.BOM_COORDINATES)
+    testCompileOnly platform(SpringBootPlugin.BOM_COORDINATES)
+    testAnnotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-restclient'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-cache-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    jvmArgs '-Xshare:off'
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('jacocoTestReport', JacocoReport) {
+    dependsOn tasks.named('test')
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.named('bootJar') {
+    archiveFileName = "${project.name}.jar"
+}
+
+graalvmNative {
+    binaries {
+        main {
+            imageName = 'markdown-slide'
+            buildArgs.addAll(['-J-Xms8192m', '-J-Xmx8192m'])
+        }
+    }
+}
+
+sonar {
+    properties {
+        property 'sonar.projectKey', 'ssobue_markdown-slide'
+        property 'sonar.organization', 'ssobue'
+        property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.sources', 'src/main/java,src/main/resources,.github'
+        property 'sonar.tests', 'src/test/java'
+        property 'sonar.coverage.jacoco.xmlReportPaths', layout.buildDirectory.file('reports/jacoco/test/jacocoTestReport.xml').get().asFile.path
+    }
+}
