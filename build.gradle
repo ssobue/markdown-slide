@@ -1,8 +1,10 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import net.ltgt.gradle.errorprone.CheckSeverity
 
 plugins {
     id 'java'
     id 'jacoco'
+    id 'net.ltgt.errorprone' version '5.1.0'
     id 'org.springframework.boot' version '4.1.0'
     id 'org.graalvm.buildtools.native' version '1.1.2'
     id 'org.sonarqube' version '7.3.1.8318'
@@ -41,8 +43,11 @@ dependencies {
     implementation 'com.h2database:h2'
 
     compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.jspecify:jspecify'
     annotationProcessor 'org.projectlombok:lombok'
+
     testCompileOnly 'org.projectlombok:lombok'
+    testCompileOnly 'org.jspecify:jspecify'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
@@ -52,12 +57,30 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-cache-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    errorprone 'com.google.errorprone:error_prone_core:2.50.0'
+    errorprone 'com.uber.nullaway:nullaway:0.13.7'
 }
 
 tasks.named('test', Test) {
     useJUnitPlatform()
     jvmArgs '-Xshare:off'
     finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (name.toLowerCase(Locale.ROOT).contains('aot')) {
+        options.errorprone.enabled = false
+        return
+    }
+    options.errorprone {
+        check('NullAway', CheckSeverity.ERROR)
+        option('NullAway:OnlyNullMarked', 'true')
+        option('NullAway:JSpecifyMode', 'true')
+        if (name.toLowerCase(Locale.ROOT).contains('test')) {
+            disable('NullAway')
+        }
+    }
 }
 
 tasks.named('jacocoTestReport', JacocoReport) {

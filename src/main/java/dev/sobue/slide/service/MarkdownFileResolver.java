@@ -3,7 +3,6 @@ package dev.sobue.slide.service;
 import java.io.File;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import lombok.NonNull;
 
 /**
  * Resolves markdown file names to local files safely.
@@ -24,7 +23,7 @@ public final class MarkdownFileResolver {
    * @param name document name without extension
    * @return resolved markdown file
    */
-  public static File resolve(@NonNull final String name) {
+  public static File resolve(final String name) {
     var validatedName = validate(name);
     var resolved = BASE_DIRECTORY.resolve(validatedName + MARKDOWN_EXTENSION).normalize();
 

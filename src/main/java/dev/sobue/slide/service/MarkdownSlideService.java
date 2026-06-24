@@ -3,7 +3,6 @@ package dev.sobue.slide.service;
 import dev.sobue.slide.entity.MarkdownDocument;
 import java.io.File;
 import java.util.List;
-import lombok.NonNull;
 
 /**
  * Interface for markdown-slide logic.
@@ -18,7 +17,7 @@ public interface MarkdownSlideService {
    * @param file markdown file
    * @return parsed Markdown documents
    */
-  List<MarkdownDocument> get(@NonNull final File file);
+  List<MarkdownDocument> get(final File file);
 
   /**
    * Get a document by file object.
@@ -27,5 +26,5 @@ public interface MarkdownSlideService {
    * @param content file content
    * @return parsed Markdown documents
    */
-  List<MarkdownDocument> get(@NonNull final String key, @NonNull final String content);
+  List<MarkdownDocument> get(final String key, final String content);
 }

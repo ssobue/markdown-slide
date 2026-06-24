@@ -4,19 +4,18 @@ import dev.sobue.slide.cache.DocumentRepository;
 import dev.sobue.slide.converter.Markdown2HtmlConverter;
 import dev.sobue.slide.entity.DocumentKey;
 import dev.sobue.slide.entity.MarkdownDocument;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
@@ -49,9 +48,9 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
   @Override
   @Transactional
   @Cacheable(cacheNames = "file", key = "'file-content-' + #file.name")
-  public List<MarkdownDocument> get(@NonNull final File file) {
+  public List<MarkdownDocument> get(final File file) {
     var builder = new StringBuilder();
-    try (var reader = new BufferedReader(new FileReader(file))) {
+    try (var reader = Files.newBufferedReader(file.toPath(), UTF_8)) {
       String buf;
       while ((buf = reader.readLine()) != null) {
         builder.append(buf).append(LINE_SEPARATOR);
@@ -69,7 +68,7 @@ public class MarkdownSlideServiceImpl implements MarkdownSlideService {
   @Override
   @Transactional
   @Cacheable(cacheNames = "document", key = "'file-content-' + #key")
-  public List<MarkdownDocument> get(@NonNull final String key, @NonNull final String content) {
+  public List<MarkdownDocument> get(final String key, final String content) {
     return getDocuments(key, content);
   }
 

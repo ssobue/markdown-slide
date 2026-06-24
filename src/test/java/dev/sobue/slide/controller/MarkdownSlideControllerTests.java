@@ -12,6 +12,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.web.server.ResponseStatusException;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,7 +60,7 @@ class MarkdownSlideControllerTests {
   @Test
   void uploadPostRedirectsToUploadedFileView() {
     var multipartFile = new MockMultipartFile("file", "deck.md", "text/markdown",
-        "# title".getBytes());
+        "# title".getBytes(UTF_8));
     when(fileUploadService.upload(eq("deck"), any(ByteArrayInputStream.class)))
         .thenReturn(new File("deck.md"));
 
@@ -71,7 +72,7 @@ class MarkdownSlideControllerTests {
   @Test
   void uploadPostReturnsBadRequestForInvalidFileName() {
     var multipartFile = new MockMultipartFile("file", "deck.md", "text/markdown",
-        "# title".getBytes());
+        "# title".getBytes(UTF_8));
     when(fileUploadService.upload(eq("../deck"), any(ByteArrayInputStream.class)))
         .thenThrow(new IllegalArgumentException("bad name"));
 

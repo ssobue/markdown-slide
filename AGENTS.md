@@ -19,3 +19,7 @@
 - Make small, focused changes; avoid unrelated refactors.
 - Always run `./gradlew test` locally after changes and before pushing.
 - If manual verification helps, start the app with `./gradlew bootRun` and test in the browser.
+- NullAway runs during Java compilation for handwritten source. Keep packages null-marked with JSpecify.
+- When adding a `package-info.java`, include a package Javadoc comment before `@NullMarked`.
+- If validation reveals additional warnings, failures, or cleanup opportunities outside the requested scope,
+  confirm the intended fix with the user before changing them.

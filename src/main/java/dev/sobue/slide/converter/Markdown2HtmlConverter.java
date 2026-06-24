@@ -1,7 +1,5 @@
 package dev.sobue.slide.converter;
 
-import lombok.NonNull;
-
 /**
  * Interface for Converter: HTML from Markdown.
  *
@@ -15,5 +13,5 @@ public interface Markdown2HtmlConverter {
    * @param markdown Markdown string body.
    * @return Converted HTML string.
    */
-  String convert2html(@NonNull final String markdown);
+  String convert2html(final String markdown);
 }

@@ -1,7 +1,7 @@
 package dev.sobue.slide.converter;
 
 import java.net.URI;
-import lombok.NonNull;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -44,13 +44,13 @@ public class Markdown2HtmlConverterImpl implements Markdown2HtmlConverter {
    * {@inheritDoc}
    */
   @Override
-  public String convert2html(@NonNull final String markdown) {
-    return restClient
+  public String convert2html(final String markdown) {
+    return Objects.requireNonNull(restClient
         .post()
         .uri(apiEndPoint)
         .contentType(MediaType.APPLICATION_JSON)
         .body(singletonMap("text", markdown))
         .retrieve()
-        .body(String.class);
+        .body(String.class));
   }
 }
