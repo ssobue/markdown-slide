@@ -1,0 +1,73 @@
+# https://docs.github.com/en/actions/how-tos/use-cases-and-examples/building-and-testing/building-and-testing-java-with-gradle
+# https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/ci-based-analysis/sonarscanner-for-gradle
+name: Gradle CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: gradle-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: build (Java ${{ matrix.java }})
+    strategy:
+      fail-fast: false
+      matrix:
+        java:
+          - '25'
+          - '26'
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'temurin'
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+      - name: Build with Gradle
+        run: ./gradlew --no-daemon -PjavaVersion=${{ matrix.java }} build jacocoTestReport
+      - name: Analyze with SonarQube Cloud
+        if: ${{ matrix.java == '25' && env.SONAR_TOKEN != '' && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew --no-daemon -PjavaVersion=${{ matrix.java }} sonar -Dsonar.token="${SONAR_TOKEN}"
+
+  native-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Set up GraalVM JDK 25
+        uses: graalvm/setup-graalvm@6f3fa030c4b8f77c1f554a860f593a654538fa38 # v1.5.6
+        with:
+          java-version: '25'
+          distribution: 'graalvm-community'
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+      - name: Build native image with Gradle
+        run: ./gradlew --no-daemon nativeCompile
+      - name: Upload native image
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: markdown-slide-ubuntu
+          path: ./build/native/nativeCompile/markdown-slide

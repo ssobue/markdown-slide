@@ -1,6 +1,6 @@
 # Markdown Slide
 
-[![Java CI](https://github.com/ssobue/markdown-slide/actions/workflows/main.yaml/badge.svg)](https://github.com/ssobue/markdown-slide/actions/workflows/main.yaml)
+[![Gradle CI](https://github.com/ssobue/markdown-slide/actions/workflows/gradle.yml/badge.svg)](https://github.com/ssobue/markdown-slide/actions/workflows/gradle.yml)
 
 Markdown Slide is a small Spring Boot application that turns Markdown documents into slide presentations. Each first-level heading becomes a separate slide that can be viewed in the browser.
 
