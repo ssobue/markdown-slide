@@ -27,7 +27,7 @@ jobs:
       matrix:
         java:
           - '25'
-          - '26'
+          - '27'
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
